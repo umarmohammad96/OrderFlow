@@ -52,7 +52,9 @@ class ProductApiIT extends IntegrationTestBase {
         mvc.perform(get("/api/products?size=1000")).andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error.code").value("VALIDATION_FAILED"));
         mvc.perform(get("/api/products?sort=password")).andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error.code").value("MALFORMED_REQUEST"));
+                .andExpect(jsonPath("$.error.code").value("MALFORMED_REQUEST"))
+                .andExpect(jsonPath("$.error.message").value(
+                        "Invalid value 'password' for parameter 'sort'; allowed: [NEWEST, PRICE_ASC, PRICE_DESC, NAME]"));
     }
 
     @Test
@@ -101,6 +103,10 @@ class ProductApiIT extends IntegrationTestBase {
         mvc.perform(get("/api/products/" + id)).andExpect(status().isNotFound());
         mvc.perform(get("/api/products")).andExpect(jsonPath("$.data.totalElements").value(0));
         getAs(admin, "/api/products/" + id).andExpect(status().isOk()).andExpect(jsonPath("$.data.active").value(false));
+        // admins can list inactive products; customers asking for them still get the active catalogue only
+        getAs(admin, "/api/products?includeInactive=true").andExpect(jsonPath("$.data.totalElements").value(1));
+        TestUser customer = registerCustomer();
+        getAs(customer, "/api/products?includeInactive=true").andExpect(jsonPath("$.data.totalElements").value(0));
     }
 
     @Test

@@ -70,8 +70,15 @@ public class GlobalExceptionHandler {
         return respond(HttpStatus.BAD_REQUEST, new ApiError(code, "Required header '" + ex.getHeaderName() + "' is missing"));
     }
 
-    @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class,
-            MissingServletRequestParameterException.class})
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    ResponseEntity<ApiResponse<Void>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String allowed = ex.getRequiredType() != null && ex.getRequiredType().isEnum()
+                ? "; allowed: " + java.util.Arrays.toString(ex.getRequiredType().getEnumConstants()) : "";
+        return respond(HttpStatus.BAD_REQUEST, new ApiError("MALFORMED_REQUEST",
+                "Invalid value '" + ex.getValue() + "' for parameter '" + ex.getName() + "'" + allowed));
+    }
+
+    @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestParameterException.class})
     ResponseEntity<ApiResponse<Void>> handleBadRequest(Exception ex) {
         return respond(HttpStatus.BAD_REQUEST, new ApiError("MALFORMED_REQUEST", "Malformed request: " + rootMessage(ex)));
     }

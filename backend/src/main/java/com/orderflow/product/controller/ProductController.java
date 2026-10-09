@@ -50,8 +50,12 @@ public class ProductController {
             @RequestParam(defaultValue = "12") @Min(1) @Max(100) int size,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) @Size(max = 100) String q,
-            @RequestParam(defaultValue = "NEWEST") ProductSort sort) {
-        PageResponse<ProductResponse> products = productService.listActive(new ProductQuery(categoryId, q, sort, page, size));
+            @RequestParam(defaultValue = "NEWEST") ProductSort sort,
+            @RequestParam(defaultValue = "false") boolean includeInactive) {
+        ProductQuery query = new ProductQuery(categoryId, q, sort, page, size);
+        // includeInactive is honoured only for admins; customers always get the cached active catalogue.
+        PageResponse<ProductResponse> products = includeInactive && SecurityUtils.currentUserIsAdmin()
+                ? productService.listAll(query) : productService.listActive(query);
         Map<Long, Integer> stock = inventoryService.availableQuantities(
                 products.content().stream().map(ProductResponse::id).toList());
         return ApiResponse.ok(products.map(p -> ProductView.of(p, stock.getOrDefault(p.id(), 0))));

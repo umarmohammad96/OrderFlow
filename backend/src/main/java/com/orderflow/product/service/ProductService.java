@@ -55,6 +55,15 @@ public class ProductService {
                 ProductResponse::from);
     }
 
+    /** Back-office listing including deactivated products. Not cached: admin traffic is low and must be fresh. */
+    @Transactional(readOnly = true)
+    public PageResponse<ProductResponse> listAll(ProductQuery query) {
+        Specification<Product> spec = Specification.allOf(ProductSpecifications.inCategory(query.categoryId()),
+                ProductSpecifications.nameContains(query.q()));
+        return PageResponse.from(products.findAll(spec, PageRequest.of(query.page(), query.size(), query.sort().sort())),
+                ProductResponse::from);
+    }
+
     /** Uncached, authoritative read used when pricing orders and rendering carts. */
     @Transactional(readOnly = true)
     public Map<Long, ProductResponse> getProducts(Collection<Long> ids) {
