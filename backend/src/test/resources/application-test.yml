@@ -1,0 +1,21 @@
+orderflow:
+  security:
+    jwt:
+      secret: test-only-secret-0123456789-abcdefghijklmnop
+  payment:
+    mock-latency: PT0S
+  outbox:
+    poll-interval: PT0.1S
+
+spring:
+  rabbitmq:
+    listener:
+      simple:
+        retry:
+          initial-interval: 20ms
+          multiplier: 1.5
+
+logging:
+  level:
+    com.orderflow: INFO
+    org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler: ERROR
