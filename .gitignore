@@ -7,3 +7,7 @@
 backend/target/
 frontend/node_modules/
 frontend/dist/
+# Eclipse project metadata
+backend/.classpath
+backend/.project
+backend/.settings/

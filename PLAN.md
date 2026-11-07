@@ -7,7 +7,7 @@ requirement to a phase, a concrete design decision, and the test that proves it.
 
 | Layer | Choice | Why |
 |---|---|---|
-| Backend | Java 21 (LTS), Spring Boot 3.5, Spring Security, Spring Data JPA | Blueprint stack; Java 21 LTS for records/virtual-thread-ready runtime |
+| Backend | Java 25 (LTS), Spring Boot 3.5, Spring Security, Spring Data JPA | Blueprint stack; Java 25 LTS runtime |
 | Auth | Spring Security OAuth2 Resource Server (Nimbus) with HS256 JWT | Framework-native JWT validation, no hand-rolled filter |
 | DB | PostgreSQL 16 + Flyway migrations | Versioned, reviewable schema; `ddl-auto=validate` |
 | Cache | Redis via Spring Cache, typed JSON serializers, TTL | Blueprint 8.3 |

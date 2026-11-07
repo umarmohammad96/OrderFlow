@@ -11,7 +11,7 @@ data by ID only, so they can be split into services later (see [Future decomposi
 | Layer | Technology |
 |---|---|
 | Frontend | React 18 (JavaScript), Axios, React Router, Vite |
-| Backend | Java 21, Spring Boot 3.5, Spring Security (OAuth2 resource server, HS256 JWT), Spring Data JPA |
+| Backend | Java 25 LTS, Spring Boot 3.5, Spring Security (OAuth2 resource server, HS256 JWT), Spring Data JPA |
 | Database | PostgreSQL 16, Flyway migrations |
 | Cache | Redis 7 (Spring Cache) |
 | Messaging | RabbitMQ 3.13 (topic exchange, DLQ, transactional outbox) |

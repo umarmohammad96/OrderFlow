@@ -17,7 +17,7 @@ Legend:
 | Layer | Status | Implementation |
 |---|---|---|
 | React.js, JavaScript, Axios, React Router | ✅ | `frontend/` (React 18, Vite, no TypeScript) |
-| Java, Spring Boot, Spring Security, Spring Data JPA | ✅ | Java 21, Boot 3.5.16 |
+| Java, Spring Boot, Spring Security, Spring Data JPA | ✅ | Java 25, Boot 3.5.16 |
 | PostgreSQL | ✅ | 16, Flyway migrations |
 | Redis | ✅ | 7, Spring Cache |
 | RabbitMQ | ✅ | 3.13, topic exchange + DLQ |
